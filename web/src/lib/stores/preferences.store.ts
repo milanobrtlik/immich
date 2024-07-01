@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import { Theme } from '$lib/constants';
+import { Theme, defaultLang } from '$lib/constants';
 import { persisted } from 'svelte-local-storage-store';
 import { get } from 'svelte/store';
 
@@ -42,11 +42,19 @@ export const locale = persisted<string | undefined>('locale', undefined, {
   },
 });
 
+export const lang = persisted('lang', defaultLang.code, {
+  serializer: {
+    parse: (text) => text,
+    stringify: (object) => object ?? '',
+  },
+});
+
 export interface MapSettings {
   allowDarkMode: boolean;
   includeArchived: boolean;
   onlyFavorites: boolean;
   withPartners: boolean;
+  withSharedAlbums: boolean;
   relativeDate: string;
   dateAfter: string;
   dateBefore: string;
@@ -57,6 +65,7 @@ export const mapSettings = persisted<MapSettings>('map-settings', {
   includeArchived: false,
   onlyFavorites: false,
   withPartners: false,
+  withSharedAlbums: false,
   relativeDate: '',
   dateAfter: '',
   dateBefore: '',
@@ -136,3 +145,5 @@ export const showDeleteModal = persisted<boolean>('delete-confirm-dialog', true,
 export const alwaysLoadOriginalFile = persisted<boolean>('always-load-original-file', false, {});
 
 export const playVideoThumbnailOnHover = persisted<boolean>('play-video-thumbnail-on-hover', true, {});
+
+export const loopVideo = persisted<boolean>('loop-video', true, {});
